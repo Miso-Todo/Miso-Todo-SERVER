@@ -1,0 +1,31 @@
+{
+  "name": "miso-todo-api",
+  "version": "1.0.0",
+  "description": "# 미소의 할일 ![Generic badge](https://img.shields.io/badge/PRs-welcome-orange.svg) [![GitHub latest commit](https://img.shields.io/github/last-commit/Miso-Todo/Miso-Todo-API)](https://github.com/Miso-Todo/Miso-Todo-API/commit)",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DDinoBox/Miso-Todo-API.git"
+  },
+  "author": "DinoBox",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DDinoBox/Miso-Todo-API/issues"
+  },
+  "homepage": "https://github.com/Miso-Todo/Miso-Todo-API",
+  "dependencies": {
+    "http": "^0.0.1-security",
+    "express": "^4.18.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "sequelize": "^6.23.2",
+    "sequelize-cli": "^6.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
