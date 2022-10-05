@@ -1,30 +1,32 @@
-const http = require('http');
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
+const morgan = require('morgan');
+const routers = require("./routers");
+const { errControl } = require('./middleware/errorControl');
 
 dotenv.config();
 
-const PORT = process.env.PORT;
 const app = express();
-const server = http.createServer(app);
+const PORT = process.env.PORT;
 
-app.use(express.json());
 app.use(cors());
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(routers);
+app.use(errControl);
 
 // Connection test
 app.get('/ping', (req, res) => {
-  res.json({ message: 'pong' });
+  res.status(200).json({'message' : 'pong'});
 });
 
 // Server start
 const start = async () => {
   try {
-    server.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
+      app.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
   } catch (err) {
-    console.error(err);
-    await prisma.$disconnect();
+      console.error(err); 
   }
-};
+}
 
 start();
