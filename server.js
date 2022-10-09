@@ -3,7 +3,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 const routers = require('./routers');
 const dotenv = require('dotenv');
-const { errControl } = require('./middleware/errorControl');
+const LocalStrategy = require('passport-local')
+const passport = require('passport');
+const passportConfig = require('./middleware/passport');
 
 dotenv.config();
 
@@ -12,17 +14,18 @@ const PORT = process.env.PORT;
 const { sequelize } = require('./models');
 sequelize.sync({ force: false })
 .then(() => {
-  console.log("Data Source has been initialized!");
+  console.log('Data Source has been initialized!');
 })
 .catch((err) => {
-  console.error("Error during Data Source initialization", err);
+  console.error('Error during Data Source initialization', err);
 });
 
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(routers);
-app.use(errControl);
+app.use(passport.initialize());
+passportConfig();
 
 // Connection test
 app.get('/ping', (req, res) => {
