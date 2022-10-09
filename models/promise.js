@@ -17,29 +17,29 @@ module.exports = class Promise extends Model {
         allowNull: false,
         defaultValue: false,
       },
-      child_signature: {
+      childSignature: {
         type: DataTypes.STRING(2000),
         allowNull: false,
       },
-      guardian_signature: {
+      guardianSignature: {
         type: DataTypes.STRING(2000),
         allowNull: false,
       },
-      task_completion: {
+      taskCompletion: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
-      promise_completion: {
+      promiseCompletion: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
-      promise_photo_url: {
+      promisePhotoUrl: {
         type: DataTypes.STRING(2000),
         allowNull: true,
       },
-      start_date: {
+      startDate: {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
