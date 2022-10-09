@@ -25,6 +25,8 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "routes": "^2.1.0",
     "sequelize": "^6.23.2",
     "sequelize-cli": "^6.5.1"

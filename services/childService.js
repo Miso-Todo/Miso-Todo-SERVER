@@ -1,43 +1,29 @@
 const bcrypt =require('bcrypt')
 const jwt = require('jsonwebtoken')
+const passport = require('passport');
 
 const { Child } = require('../models')
-const { isLoggedIn, isNotLoggedIn } = require('../middleware');
-
-const validatePassword = (password) => {
-  const passwordRegex = /(?=.*\d)(?=.*[a-z]).{8,}/
-  if(!passwordRegex.test(password)) {
-    const error = new Error('INVALID_PASSWORD')
-    error.statusCode = 400
-    throw error
-  }
-}
-
-const hashedPassword = async(plainPassword) =>{
-    const saltRounds = 10
-    const saltingPassword = await bcrypt.genSalt(saltRounds);
-    
-    return await bcrypt.hash(plainPassword, saltingPassword); 
-}
+const secretKey = require('../config/secretKey').secretKey;
+const options = require('../config/secretKey').options;
 
 const signUp = async (req, res, next) => {
   const { userId, password, name, kakaoId } = req.body;
   try {
-    const exChildId = await Child.findOne({
+    const duplicateId = await Child.findOne({
       where: {
         userId: userId,
       }
     });
-    if (exChildId) {
+    if (duplicateId) {
       return res.status(403).json({'message' : 'ERROR_ACCOUNT_ALREADY_EXIST'});
     }
 
-    const exChildKakaoId = await Child.findOne({
+    const duplicateKakaoId = await Child.findOne({
       where: {
         kakaoId: kakaoId,
       }
     });
-    if (exChildKakaoId) {
+    if (duplicateKakaoId) {
       return res.status(403).json({'message' : 'ERROR_KAKAOID_ALREADY_EXIST'});
     }
 
@@ -62,20 +48,48 @@ const signUp = async (req, res, next) => {
     };
     await Child.create({
       userId: userId,
-      password: password,
+      password: hashedPassword,
       name: name,
       uniqueNumber: UniqueNumber,
       kakaoId: kakaoId,
       ModifierId: 1,
       ProfileId:1
     });
-    res.status(201).json({'message' : 'SUCCESS'});
+    res.status(201).json({'message' : 'SUCCESS_SIGN_UP'});
   } catch (error) {
     console.error(error);
     next(error);
   }
 };
 
-module.exports ={
+const login = async (req, res) => {
+  try {
+    passport.authenticate('local', (passportError, user, info) => {
+      if (passportError || !user) {
+      res.status(400).json({ message: info });
+      return;
+    }
+    req.login(user, { session: false }, (loginError) => {
+      if (loginError) {
+        res.send(loginError);
+        return;
+      }
+    const payload = {
+      id: user.userId,
+      name: user.name,
+      auth: user.uniqueNumber
+    };
+		const token = jwt.sign(payload, secretKey, options);
+    res.json({ message:'SUCCESS_LOGIN', token });
+      });
+    })(req, res);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+module.exports = {
   signUp,
+  login
 }
