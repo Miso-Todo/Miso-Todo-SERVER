@@ -4,7 +4,7 @@ const { Model } = DataTypes;
 module.exports = class Protector extends Model {
   static init(sequelize) {
     return super.init({
-      user_id: {
+      userId: {
         type: DataTypes.STRING(50),
         allowNull: false,
         unique: true,
@@ -22,7 +22,7 @@ module.exports = class Protector extends Model {
         allowNull: false,
         defaultValue: false,
       },
-      kakao_id: {
+      kakaoId: {
         type: DataTypes.BIGINT,
         allowNull: true,
         unique: true,

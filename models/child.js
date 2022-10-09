@@ -4,7 +4,7 @@ const { Model } = DataTypes;
 module.exports = class Child extends Model {
   static init(sequelize) {
     return super.init({
-      user_id: {
+      userId: {
         type: DataTypes.STRING(50),
         allowNull: false,
         unique: true,
@@ -17,12 +17,12 @@ module.exports = class Child extends Model {
         type: DataTypes.STRING(30),
         allowNull: false,
       },
-      unique_number: {
+      uniqueNumber: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         unique: true,
       },
-      kakao_id: {
+      kakaoId: {
         type: DataTypes.BIGINT,
         allowNull: true,
         unique: true,
