@@ -4,7 +4,7 @@ const { Model } = DataTypes;
 module.exports = class Profile extends Model {
   static init(sequelize) {
     return super.init({
-      photo_url: {
+      photoUrl: {
         type: DataTypes.STRING(2000),
         allowNull: false,
       },

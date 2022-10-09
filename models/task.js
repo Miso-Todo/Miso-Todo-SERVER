@@ -8,11 +8,11 @@ module.exports = class Task extends Model {
         type: DataTypes.STRING(100),
         allowNull: false,
       },
-      child_completion: {
+      childCompletion: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      guardian_completion: {
+      guardianCompletion: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },

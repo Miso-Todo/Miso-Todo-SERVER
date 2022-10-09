@@ -12,10 +12,10 @@ const PORT = process.env.PORT;
 const { sequelize } = require('./models');
 sequelize.sync({ force: false })
 .then(() => {
-    console.log('데이터베이스 연결 성공');
+  console.log("Data Source has been initialized!");
 })
 .catch((err) => {
-    console.error(err);
+  console.error("Error during Data Source initialization", err);
 });
 
 app.use(cors());
