@@ -3,7 +3,6 @@ const cors = require('cors');
 const morgan = require('morgan');
 const routers = require('./routers');
 const dotenv = require('dotenv');
-const LocalStrategy = require('passport-local')
 const passport = require('passport');
 const passportConfig = require('./middleware/passport');
 
@@ -38,7 +37,7 @@ const start = async () => {
       app.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
   } catch (err) {
       console.error(err); 
-  }
-}
+  };
+};
 
 start();
