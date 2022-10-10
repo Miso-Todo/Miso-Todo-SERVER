@@ -66,21 +66,21 @@ const login = async (req, res) => {
   try {
     passport.authenticate('local', (passportError, user, info) => {
       if (passportError || !user) {
-      res.status(400).json({ message: info });
-      return;
-    }
-    req.login(user, { session: false }, (loginError) => {
-      if (loginError) {
-        res.send(loginError);
+        res.status(400).json({ message: info });
         return;
       }
-    const payload = {
-      id: user.userId,
-      name: user.name,
-      auth: user.uniqueNumber
-    };
-		const token = jwt.sign(payload, secretKey, options);
-    res.json({ message:'SUCCESS_LOGIN', token });
+      req.login(user, { session: false }, (loginError) => {
+        if (loginError) {
+          res.send(loginError);
+          return;
+        }
+        const payload = {
+          id: user.userId,
+          name: user.name,
+          auth: user.uniqueNumber
+        };
+        const token = jwt.sign(payload, secretKey, options);
+        res.json({ message:'SUCCESS_LOGIN', token });
       });
     })(req, res);
   } catch (error) {
@@ -89,7 +89,36 @@ const login = async (req, res) => {
   }
 };
 
+const kakaoLogin = async (req, res) => {
+  try {
+    passport.authenticate('kakao',(passportError, user, info) => {
+      if (passportError || !user) {
+        console.log(info)
+        res.status(400).send({ message: info });
+        return;
+      }
+      req.login(user, { session: false }, (loginError) => {
+        if (loginError) {
+          res.send(loginError);
+          return;
+        }
+      const payload = {
+        id: user.userId,
+        name: user.name,
+        auth: user.uniqueNumber
+      };
+      const token = jwt.sign(payload, secretKey, options);
+      res.json({ message:'SUCCESS_LOGIN', token });
+      });
+    })(req, res);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  };
+};
+
 module.exports = {
   signUp,
-  login
+  login,
+  kakaoLogin,
 }
