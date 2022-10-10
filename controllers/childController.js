@@ -8,7 +8,7 @@ const signUp = (isNotLoggedIn, async (req, res, next) => {
 
   if(!userId || !password || !name) {
     return res.status(400).json({ message : 'KEY_ERROR' });
-  }
+  };
   await childService.signUp(req, res, next);
 });
 
@@ -17,13 +17,8 @@ const login = (isNotLoggedIn, async (req, res) => {
   
   if (!userId || !password) {
     return res.status(400).json({ message : 'KEY_ERROR' });
-  }
+  };
   await childService.login(req, res);
-});
-
-const kakao = (isNotLoggedIn, async (req, res) => {
-  console.log("카카오 1")
-  await childService.kakao(req, res);
 });
 
 const kakaoLogin = (isNotLoggedIn, async (req, res) => {
@@ -33,6 +28,5 @@ const kakaoLogin = (isNotLoggedIn, async (req, res) => {
 module.exports = {
 	signUp,
   login,
-  kakao,
   kakaoLogin,
-}
+};

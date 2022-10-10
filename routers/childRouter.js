@@ -15,4 +15,4 @@ router.get('/kakao/callback', errorHandler(childController.kakaoLogin));
 
 module.exports = {
   router,
-}
+};

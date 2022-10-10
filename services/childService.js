@@ -16,7 +16,7 @@ const signUp = async (req, res, next) => {
     });
     if (duplicateId) {
       return res.status(403).json({'message' : 'ERROR_ACCOUNT_ALREADY_EXIST'});
-    }
+    };
 
     const duplicateKakaoId = await Child.findOne({
       where: {
@@ -25,7 +25,7 @@ const signUp = async (req, res, next) => {
     });
     if (duplicateKakaoId) {
       return res.status(403).json({'message' : 'ERROR_KAKAOID_ALREADY_EXIST'});
-    }
+    };
 
     const hashedPassword = await bcrypt.hash(password, 12);
     
@@ -42,7 +42,7 @@ const signUp = async (req, res, next) => {
         });
         if(!exUniqueNumber){
           UniqueNumber = randomNumber;
-        }
+        };
         break;
       };
     };
@@ -59,7 +59,7 @@ const signUp = async (req, res, next) => {
   } catch (error) {
     console.error(error);
     next(error);
-  }
+  };
 };
 
 const login = async (req, res) => {
@@ -86,7 +86,7 @@ const login = async (req, res) => {
   } catch (error) {
     console.error(error);
     next(error);
-  }
+  };
 };
 
 const kakaoLogin = async (req, res) => {
@@ -96,12 +96,11 @@ const kakaoLogin = async (req, res) => {
         console.log(info)
         res.status(400).send({ message: info });
         return;
-      }
+      };
       req.login(user, { session: false }, (loginError) => {
         if (loginError) {
           res.send(loginError);
-          return;
-        }
+        };
       const payload = {
         id: user.userId,
         name: user.name,
@@ -121,4 +120,4 @@ module.exports = {
   signUp,
   login,
   kakaoLogin,
-}
+};

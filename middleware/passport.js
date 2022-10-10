@@ -17,14 +17,14 @@ const passportVerify = async (userId, password, done) => {
       console.log(child)
       done(null, false, 'INVALID_ACCOUNT');
       return;
-    }
+    };
 
     const compareResult = await bcrypt.compare(password, child.password);
     
     if (compareResult) {
       done(null, child);
       return;
-    }
+    };
     done(null, false, 'INVALID_PASSWORD');
   } catch (error) {
     console.error(error);
@@ -35,28 +35,25 @@ const passportVerify = async (userId, password, done) => {
 const passportKakaoConfig = {
   clientID: process.env.KAKAO_CLIENT_ID,
   clientSecret: process.env.KAKAO_CLIENT_SECRET,
-  callbackURL: '/oauth/kakao/callback',
-}
+  callbackURL: process.env.KAKAO_REDIRECT_URI
+};
+
 const passportKakaoVerify = async (accessToken, refreshToken, profile, done) => {
-  console.log('kakao profile', profile);
-  const kakaoId = profile.id
-  console.log(kakaoId)
+  const kakaoId = profile.id;
   try {
     const exChild = await Child.findOne({
       where: { kakaoId: profile.id },
     });
-    console.log(exChild)
     if (!exChild) {
       done(null, false, { kakaoId });
-      return;
-    }
+    };
     if (exChild) {
       done(null, exChild);
-    }
+    };
   } catch(error) {
     console.error(error);
     done(error);
-  }
+  };
 };
 
 module.exports = () => {
