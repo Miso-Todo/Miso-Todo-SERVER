@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const routers = require('./routers');
 const dotenv = require('dotenv');
 const passport = require('passport');
 const passportConfig = require('./middleware/passport');
+const indexRouter = require('./routers/index');
 
 dotenv.config();
 
@@ -22,7 +22,6 @@ sequelize.sync({ force: false })
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(routers);
 app.use(passport.initialize());
 passportConfig();
 
@@ -34,9 +33,11 @@ app.get('/ping', (req, res) => {
 // Server start
 const start = async () => {
   try {
-      app.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
+    app.get('/', (req, res) => res.send('Welcome Swagger handler'));
+    indexRouter(app);
+    app.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
   } catch (err) {
-      console.error(err); 
+    console.error(err); 
   };
 };
 
