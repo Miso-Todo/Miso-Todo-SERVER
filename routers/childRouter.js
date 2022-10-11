@@ -4,6 +4,8 @@ const router = express.Router();
 
 const errorHandler = require('../middleware/errorHandler');
 const childController = require('../controllers/childController');
+const Swagger = require('../handler/swagger');
+const swagger = new Swagger();
 
 router.post('/signup', errorHandler(childController.signUp));
 
