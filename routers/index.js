@@ -1,10 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const childRouter = require('./childRouter');
+const childRouter = require('../routers/childRouter');
+const ApiDocs = require('../docs/index');
 
-router.use('/children', childRouter.router);
+function getSwaggerOption() {
+  const apiDocs = new ApiDocs();
+  apiDocs.init();
 
-router.use('/oauth', childRouter.router);
+  return apiDocs.getSwaggerOption();
+}
 
-module.exports = router;
+module.exports = (app) => {
+  const { swaggerUI, specs, setUpOption } = getSwaggerOption();
+
+  app.use('/children', childRouter.router);
+  app.use('/oauth', childRouter.router);
+  app.use('/api', swaggerUI.serve, swaggerUI.setup(specs, setUpOption));
+};
