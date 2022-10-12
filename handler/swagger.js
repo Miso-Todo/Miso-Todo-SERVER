@@ -46,10 +46,9 @@ const swaggerServers = [
 ];
 
 const swaggerSecurityScheme = {
-  bearerAuth: {
-    type: 'http',
-    scheme: 'bearer',
-    bearerFormat: 'Token',
+  jwtAuth: {
+    type: 'apiKey',
+    scheme: 'jwt',
     name: 'Authorization',
     description: '인증 토큰 값을 넣어주세요.',
     in: 'header',
