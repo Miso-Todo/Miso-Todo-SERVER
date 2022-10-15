@@ -2,7 +2,7 @@ const bcrypt =require('bcrypt')
 const jwt = require('jsonwebtoken')
 const passport = require('passport');
 
-const { Child } = require('../models')
+const { Child, Modifier, Profile } = require('../models')
 const secretKey = require('../config/secretKey').secretKey;
 const options = require('../config/secretKey').options;
 
@@ -77,7 +77,7 @@ const login = async (req, res) => {
         const payload = {
           id: user.userId,
           name: user.name,
-          auth: user.uniqueNumber
+          uniqueNumber: user.uniqueNumber,
         };
         const token = jwt.sign(payload, secretKey, options);
         res.json({ message:'SUCCESS_LOGIN', token });
@@ -116,8 +116,58 @@ const kakaoLogin = async (req, res) => {
   };
 };
 
+const getInfo = async (req, res) => {
+  const userId = req.decoded.id;
+  try{
+    const childInfo = await Child.findOne({
+      where: {
+        userId: userId,
+      },
+      attributes: [
+        'id', 
+        'userId', 
+        'name', 
+        'uniqueNumber'
+      ],
+      include: [{
+        model: Modifier,
+        attributes: ['content'],
+      }, {
+        model: Profile,
+        attributes: ['photoUrl'],
+      }]
+    });
+    res.status(200).json({'results': childInfo});
+  } catch (error) {
+    console.error(error);
+  };
+};
+
+const updateInfo = async (req, res) => {
+  const userId = req.decoded.id;
+  const { modifierId, name } = req.body;
+  try{
+    const child = await Child.findOne({
+      where: {
+        userId: userId,
+      }
+    });
+    if(child){
+      child.update({
+        ModifierId: modifierId,
+        name : name
+      })
+    };
+    res.status(200).json({'message': 'SUCCESS_UPDATE'});
+  } catch (error) {
+    console.error(error);
+  };
+};
+
 module.exports = {
   signUp,
   login,
   kakaoLogin,
+  getInfo,
+  updateInfo,
 };

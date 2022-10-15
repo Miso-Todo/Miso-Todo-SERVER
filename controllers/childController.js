@@ -25,8 +25,18 @@ const kakaoLogin = (isNotLoggedIn, async (req, res) => {
   await childService.kakaoLogin(req, res);
 });
 
+const getInfo = (isLoggedIn, async (req, res) => {
+  await childService.getInfo(req, res);
+});
+
+const updateInfo = (isLoggedIn, async (req, res) => {
+  await childService.updateInfo(req, res);
+});
+
 module.exports = {
 	signUp,
   login,
   kakaoLogin,
+  getInfo,
+  updateInfo,
 };
